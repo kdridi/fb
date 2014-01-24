@@ -13,7 +13,7 @@ module Facebook.RealTime
     , RealTimeUpdateNotificationUserEntry(..)
     ) where
 
-import Control.Applicative ((<$>), (<*>))
+import Control.Applicative ((<$>), (<*>), pure)
 import Control.Monad.Trans.Control (MonadBaseControl)
 import Control.Monad (liftM, mzero, void)
 import Crypto.Hash.CryptoAPI (SHA1)
@@ -237,3 +237,6 @@ instance A.FromJSON RealTimeUpdateNotificationUserEntry where
       <*> v A..: "changed_fields"
       <*> v A..: "time"
   parseJSON _ = mzero
+
+instance A.FromJSON ByteString where
+  parseJSON = A.withText "ByteString" $ pure . TE.encodeUtf8
